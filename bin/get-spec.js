@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path');
 const fse = require('fs-extra');
 const yargs = require('yargs');
@@ -33,7 +34,7 @@ const fetchOapiSpec = async (url) => {
     throw new Error(
       `Failed to load API spec: ${
         axios.isAxiosError(err)
-          ? err.response?.status ?? err.code
+          ? (err.response || {}).status || err.code
           : 'Unknown error'
       }`,
     );

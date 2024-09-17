@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const ts = require('typescript');
 
 const compile = (fileNames, options) => {
@@ -14,10 +15,12 @@ const compile = (fileNames, options) => {
         diagnostic.file,
         diagnostic.start,
       );
+
       const message = ts.flattenDiagnosticMessageText(
         diagnostic.messageText,
         '\n',
       );
+
       console.log(
         `${diagnostic.file.fileName} (${line + 1},${
           character + 1

@@ -2,10 +2,10 @@ import axios, { AxiosInstance, RawAxiosRequestHeaders } from 'axios';
 import { noCase } from 'change-case';
 import { createRequestFunction } from './request';
 import {
-  createRefreshTokenInterceptor,
   createEconnresetInterceptor,
-  createResponseDebugInterceptor,
+  createRefreshTokenInterceptor,
   createRequestDebugInterceptor,
+  createResponseDebugInterceptor,
   timeoutInterceptor,
 } from './interceptors';
 import { serializeQueryParams } from './query';

@@ -1,4 +1,4 @@
-type ValidationError = {
+export type ValidationError = {
   property: string;
   constraint: string;
   message: string;
@@ -64,8 +64,10 @@ export class OpenApiClientError extends BaseOpenApiClientError {
 /**
  * Determines whether a value is (probably) an error thrown by the API client.
  */
-export const isOpenApiClientError = (val: any): val is OpenApiClientError =>
-  !!val?.isOpenApiClientError;
+export const isOpenApiClientError = (
+  value: unknown,
+): value is OpenApiClientError =>
+  typeof value === 'object' && !!value && 'isOpenApiClientError' in value;
 
 export class OpenApiClientTimeoutError extends BaseOpenApiClientError {
   isOpenApiClientTimeoutError = true;
@@ -82,5 +84,8 @@ export class OpenApiClientTimeoutError extends BaseOpenApiClientError {
  * Determines whether a value is (probably) a timeout error thrown by the API client.
  */
 export const isOpenApiClientTimeoutError = (
-  val: any,
-): val is OpenApiClientTimeoutError => !!val?.isOpenApiClientTimeoutError;
+  value: unknown,
+): value is OpenApiClientTimeoutError =>
+  typeof value === 'object' &&
+  !!value &&
+  'isOpenApiClientTimeoutError' in value;

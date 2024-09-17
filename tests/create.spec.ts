@@ -2,10 +2,10 @@ import axios from 'axios';
 import { getRequestFunction } from '../src/create';
 import { createRequestFunction } from '../src/request';
 import {
-  createRefreshTokenInterceptor,
   createEconnresetInterceptor,
-  createResponseDebugInterceptor,
+  createRefreshTokenInterceptor,
   createRequestDebugInterceptor,
+  createResponseDebugInterceptor,
 } from '../src/interceptors';
 import { OpenApiClientOptions } from '../src/options';
 import { serializeQueryParams } from '../src/query';

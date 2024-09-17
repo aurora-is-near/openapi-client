@@ -1,5 +1,5 @@
-import { AxiosRequestConfig, AxiosInstance } from 'axios';
-import { TokenRetrieverFunction, getAuthorizationHeader } from './auth';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { getAuthorizationHeader, TokenRetrieverFunction } from './auth';
 import { OperationConfig } from './operations';
 
 type OperationOption = Record<string, unknown> | null;
@@ -57,7 +57,10 @@ export const createRequestFunction =
     getAccessToken?: TokenRetrieverFunction,
     refreshAccessToken?: TokenRetrieverFunction,
   ) =>
-  async (operationConfig: OperationConfig, options?: OperationOptions) => {
+  async <T>(
+    operationConfig: OperationConfig,
+    options?: OperationOptions,
+  ): Promise<T> => {
     const { endpoint, method, secure } = operationConfig;
     const url = getFullPath(populateEndpoint(endpoint, options), basePath);
     const axiosRequestConfig: AxiosRequestConfig = {
@@ -86,5 +89,5 @@ export const createRequestFunction =
 
     const res = await axiosInstance.request(axiosRequestConfig);
 
-    return res.data;
+    return res.data as T;
   };

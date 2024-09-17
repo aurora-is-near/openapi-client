@@ -15,7 +15,7 @@ export type TokenRetrieverFunction = () => AccessToken | Promise<AccessToken>;
  */
 const getTokenProperty = (accessToken: string, key: keyof DecodedToken) => {
   try {
-    return (decode(accessToken) as DecodedToken)[key];
+    return decode<DecodedToken>(accessToken)[key];
   } catch (err) {
     // Failed to decode token, ignore.
     return null;
@@ -108,7 +108,7 @@ export const getAuthorizationHeader = async (
   }
 
   const noop = () => null;
-  let accessToken = await (getAccessToken || noop)();
+  let accessToken = await (getAccessToken ?? noop)();
 
   if (!secure && (!accessToken || !isUserAdmin(accessToken))) {
     return null;

@@ -1,7 +1,7 @@
 import {
   isOpenApiClientError,
-  OpenApiClientError,
   isOpenApiClientTimeoutError,
+  OpenApiClientError,
   OpenApiClientTimeoutError,
   OpenApiClientTimeoutErrorCode,
 } from '../src/errors';

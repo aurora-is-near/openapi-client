@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { ModuleKind } = require('typescript');
 const {
   getTypeScriptReader,
@@ -19,6 +20,7 @@ const { SRC_DIR, TEMPLATES_DIR } = require('./constants');
 const { compileTs } = require('./compile');
 const { getOapiSpecs } = require('./get-spec');
 
+// eslint-disable-next-line import/no-dynamic-require
 const pkg = require(`${appRoot.path}/package.json`);
 
 const GENERATED_FILES_DIR = path.join(SRC_DIR, 'generated');
@@ -58,7 +60,7 @@ const formatJsonSchemaTitleAsType = (jsonSchemaTitle) => {
  * Build up a reference to one of our types from a content schema.
  */
 const getTypeReferenceFromJson = (content) => {
-  if (!content?.properties) {
+  if (!content || !content.properties) {
     return 'undefined';
   }
 
@@ -335,7 +337,7 @@ const validateOapiSpec = (oapiSpec, operations) => {
  * Build an API client based on its OpenAPI spec.
  */
 const buildClient = async (oapiSpec) => {
-  const { title } = oapiSpec?.info ?? {};
+  const { title } = (oapiSpec || {}).info || {};
   const outDir = path.join(GENERATED_FILES_DIR, camelCase(title));
   const types = await openapiTS(oapiSpec);
   const jsonSchemaTypes = await convertTsToJsonSchema(types);

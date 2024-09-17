@@ -35,5 +35,5 @@ export const createRequestDebugInterceptor = (
 
     return config;
   },
-  error: (error: any) => Promise.reject(error),
+  error: (error: unknown) => Promise.reject(error),
 });
