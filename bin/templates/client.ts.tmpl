@@ -1,0 +1,64 @@
+/**
+ * This file was auto-generated.
+ * Do not make direct changes to the file.
+ */
+
+import { operations } from './types';
+import { OperationConfig } from '../../operations';
+
+export interface {{name}}Methods {
+  {{#each operations}}
+  {{operationId}}: {
+    response: {{{responseTypeRef}}};
+    {{#if dataTypeRef}}
+    data: {{{dataTypeRef}}};
+    {{/if}}
+    {{#if hasOptions}}
+    options: {
+      {{#if pathParametersTypeRef}}
+      params: {{{pathParametersTypeRef}}};
+      {{else}}
+      params?: null;
+      {{/if}}
+      {{#if queryParametersTypeRef}}
+      query{{#unless hasRequiredQueryParameters}}?{{/unless}}: {{{queryParametersTypeRef}}};
+      {{else}}
+      query?: null;
+      {{/if}}
+      {{#if dataTypeRef}}
+      data: {{../name}}Methods['{{operationId}}']['data'];
+      {{else}}
+      data?: null;
+      {{/if}}
+    };
+    {{else}}
+    options?: never;
+    {{/if}}
+  };
+  {{/each}}
+};
+
+export type {{name}}Request = <T extends keyof {{name}}Methods>(
+  operationConfig: OperationConfig,
+  options?: {{name}}Methods[T]['options'],
+) => Promise<{{name}}Methods[T]['response']>;
+
+export type {{name}}Client = {
+  {{#each operations}}
+  {{operationId}}: ({{#if hasOptions}}options{{#if hasOptionalOptions}}?{{/if}}: {{../name}}Methods['{{operationId}}']['options']{{/if}}) => Promise<{{../name}}Methods['{{operationId}}']['response']>;
+  {{/each}}
+}
+
+export const getOperations = (request: {{name}}Request): {{name}}Client => ({
+  {{#each operations}}
+  async {{operationId}}(
+    {{#if hasOptions}}options{{#if hasOptionalOptions}}?{{/if}}: {{../name}}Methods['{{operationId}}']['options']{{/if}}
+  ): Promise<{{../name}}Methods['{{operationId}}']['response']> {
+    return request({
+      endpoint: '{{endpoint}}',
+      method: '{{method}}',
+      secure: {{secure}},
+    }{{#if hasOptions}}, options{{/if}}) as Promise<{{../name}}Methods['{{operationId}}']['response']>;
+  },
+  {{/each}}
+});

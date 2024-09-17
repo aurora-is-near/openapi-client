@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    uses: ./.github/workflows/test.yml
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  dependabot:
+    uses: ./.github/workflows/dependabot-auto-merge.yml
+    needs: test
+    secrets:
+      GH_TOKEN: "${{ secrets.GH_DEPENDABOT_TOKEN || secrets.GH_DEPLOY_TOKEN }}"

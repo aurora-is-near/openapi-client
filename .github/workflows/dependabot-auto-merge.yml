@@ -1,0 +1,41 @@
+name: Dependabot Auto-Merge
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.user.login == 'dependabot[bot]' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Fetch Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v1
+        with:
+          github-token: "${{ secrets.GH_TOKEN }}"
+      - name: Determine auto-mergeability
+        id: auto
+        run: echo "enabled=${{steps.metadata.outputs.dependency-type == 'direct:development' && (steps.metadata.outputs.update-type == 'version-update:semver-patch' || steps.metadata.outputs.update-type == 'version-update:semver-minor')}}"  >> $GITHUB_OUTPUT
+      - name: Enable auto-merge for patches
+        if: steps.auto.outputs.enabled == 'true'
+        run: gh pr merge --auto --squash "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}
+      - name: Approve the PR
+        if: steps.auto.outputs.enabled == 'true'
+        run: |
+          gh pr checkout "$PR_URL"
+            if [ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" != "APPROVED" ];
+          then
+            gh pr review --approve "$PR_URL"
+          else
+            echo "PR already approved.";
+          fi
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GH_TOKEN}}

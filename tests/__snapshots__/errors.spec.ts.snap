@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Errors OpenApiClientError creates a basic error 1`] = `"BadRequest"`;
+
+exports[`Errors OpenApiClientError creates an error with a type and validation errors 1`] = `"BadRequest The email is no good (email isValid)"`;
+
+exports[`Errors OpenApiClientTimeoutError creates a timeout error for status code ECONNABORTED 1`] = `"Request aborted"`;
+
+exports[`Errors OpenApiClientTimeoutError creates a timeout error for status code ETIMEDOUT 1`] = `"Request aborted"`;

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createResponseDebugInterceptor error logs a 400 error as a warning 1`] = `[OpenApiClientError: 400 Bad Request <PUT http://api.com/endpoint> id must be an integer number (id isInt), name must be a string (name isString)]`;
+
+exports[`createResponseDebugInterceptor error logs a 500 error 1`] = `[OpenApiClientError: 500 Internal Server Error <GET http://api.com/endpoint>]`;
+
+exports[`createResponseDebugInterceptor error logs a time out error as a warning when the code is "ECONNABORTED" 1`] = `[OpenApiClientTimeoutError: Request aborted]`;
+
+exports[`createResponseDebugInterceptor error logs a time out error as a warning when the code is "ETIMEDOUT" 1`] = `[OpenApiClientTimeoutError: Request aborted]`;
+
+exports[`createResponseDebugInterceptor error logs an error when the API response data is "" 1`] = `[OpenApiClientError: 500 Bad thing <POST http://api.com/endpoint>]`;
+
+exports[`createResponseDebugInterceptor error logs an error when the API response data is "{}" 1`] = `[OpenApiClientError: 500 Bad thing <POST http://api.com/endpoint>]`;
+
+exports[`createResponseDebugInterceptor error logs an error when the API response data is "undefined" 1`] = `[OpenApiClientError: 500 Bad thing <POST http://api.com/endpoint>]`;
+
+exports[`createResponseDebugInterceptor error logs an error when the response body does not exist 1`] = `[OpenApiClientError: 500 Bad thing <GET http://api.com/endpoint>]`;

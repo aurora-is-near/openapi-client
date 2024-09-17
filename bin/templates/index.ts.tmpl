@@ -1,0 +1,33 @@
+import { getRequestFunction } from '../create';
+import { OpenApiClientOptions } from '../options';
+
+{{#each services}}
+import type { components as {{name}}Types } from './{{dir}}/types';
+import {
+  getOperations as get{{name}}Operations,
+  {{name}}Methods,
+  {{name}}Client,
+  {{name}}Request,
+} from './{{dir}}/client';
+{{/each}}
+
+{{#each services}}
+export type {{name}}Models = {{name}}Types['schemas'];
+
+export {
+  {{name}}Methods,
+  {{name}}Client,
+  {{name}}Request,
+  get{{name}}Operations,
+};
+{{/each}}
+{{#each services}}
+
+export const create{{name}}Client = (
+  options: OpenApiClientOptions,
+): {{name}}Client => {
+  const request = getRequestFunction('{{title}}', '{{version}}', options);
+
+  return get{{name}}Operations(request);
+};
+{{/each}}
