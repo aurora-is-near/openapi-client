@@ -13,9 +13,9 @@ type ResponseError = AxiosError<
 };
 
 export const createResponseDebugInterceptor = (
-  onError?: (error: unknown) => void,
-  onClientError?: (error: unknown) => void,
-  onTimeoutError?: (error: unknown) => void,
+  onError?: (error: OpenApiClientError) => void,
+  onClientError?: (error: OpenApiClientError) => void,
+  onTimeoutError?: (error: OpenApiClientTimeoutError) => void,
 ) => ({
   success: (res: AxiosResponse) => res,
   error: (error: ResponseError) => {

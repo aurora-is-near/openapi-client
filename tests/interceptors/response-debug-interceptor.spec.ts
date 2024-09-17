@@ -40,7 +40,7 @@ describe('createResponseDebugInterceptor', () => {
       let err;
 
       try {
-        interceptor.error(error);
+        interceptor.error(error as any);
       } catch (e) {
         err = e;
       }
@@ -96,7 +96,7 @@ describe('createResponseDebugInterceptor', () => {
       let err;
 
       try {
-        interceptor.error(error);
+        interceptor.error(error as any);
       } catch (e) {
         err = e;
       }
@@ -140,7 +140,7 @@ describe('createResponseDebugInterceptor', () => {
       let err;
 
       try {
-        interceptor.error(error);
+        interceptor.error(error as any);
       } catch (e) {
         err = e;
       }
@@ -182,7 +182,7 @@ describe('createResponseDebugInterceptor', () => {
         let err;
 
         try {
-          interceptor.error(error);
+          interceptor.error(error as any);
         } catch (e) {
           err = e;
         }
@@ -217,7 +217,7 @@ describe('createResponseDebugInterceptor', () => {
       let err;
 
       try {
-        interceptor.error(error);
+        interceptor.error(error as any);
       } catch (e) {
         err = e;
       }
@@ -254,7 +254,7 @@ describe('createResponseDebugInterceptor', () => {
         let err;
 
         try {
-          interceptor.error(error);
+          interceptor.error(error as any);
         } catch (e) {
           err = e;
         }
@@ -300,7 +300,7 @@ describe('createResponseDebugInterceptor', () => {
         let err;
 
         try {
-          interceptor.error(error);
+          interceptor.error(error as any);
         } catch (e) {
           err = e;
         }
