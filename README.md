@@ -6,12 +6,10 @@ A type-safe [OpenAPI](https://swagger.io/specification/) client generator.
 
 - [Installation](#installation)
 - [Generating the client](#generating-the-client)
-- [Initialisation](#initialisation)
 - [Usage](#usage)
 - [Typescript](#typescript)
 - [Authorization](#authorization)
 - [Error handling](#error-handling)
-- [Forced upgrades](#forced-upgrades)
 - [Debugging](#debugging)
 - [Mocking](#mocking)
 
