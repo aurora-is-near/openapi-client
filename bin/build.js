@@ -179,6 +179,18 @@ const hasRequiredParametersType = (operationSchema, subType) => {
   return (parameters.properties[subType].required || []).length > 0;
 };
 
+const isFormDataOperation = (operationSchema) => {
+  const { requestBody } = operationSchema.properties || {};
+
+  if (!requestBody) {
+    return false;
+  }
+
+  const { content } = requestBody.properties || {};
+
+  return '"multipart/form-data"' in content.properties;
+};
+
 /**
  * Get the core details about the API's operations.
  */
@@ -186,54 +198,66 @@ const getFlatOperations = ({ paths }, jsonSchemaTypes) =>
   Object.entries(paths).reduce(
     (acc, [endpoint, endpointConfig]) => [
       ...acc,
-      ...Object.entries(endpointConfig).map(([method, methodConfig]) => {
-        const { operationId } = methodConfig;
-        const operationSchema =
-          jsonSchemaTypes.definitions.operations.properties[operationId];
+      ...Object.entries(endpointConfig)
+        .map(([method, methodConfig]) => {
+          const { operationId } = methodConfig;
+          const operationSchema =
+            jsonSchemaTypes.definitions.operations.properties[operationId];
 
-        const dataTypeRef = getDataType(operationId, operationSchema);
-        const pathParametersTypeRef = getParametersType(
-          operationId,
-          operationSchema,
-          'path',
-        );
+          if (isFormDataOperation(operationSchema)) {
+            console.warn(
+              `Skipping operation "${operationId}": form data operations are not supported yet`,
+            );
 
-        const queryParametersTypeRef = getParametersType(
-          operationId,
-          operationSchema,
-          'query',
-        );
+            return null;
+          }
 
-        const hasRequiredQueryParameters = hasRequiredParametersType(
-          operationSchema,
-          'query',
-        );
-
-        const hasOptionalOptions =
-          !hasRequiredQueryParameters && !pathParametersTypeRef && !dataTypeRef;
-
-        return {
-          endpoint,
-          method,
-          operationId,
-          secure: !!(methodConfig.security || []).length,
-          hasOptions:
-            pathParametersTypeRef || queryParametersTypeRef || dataTypeRef,
-          hasOptionalOptions,
-          responseTypeRef: getFunctionResponseType(
+          const dataTypeRef = getDataType(operationId, operationSchema);
+          const pathParametersTypeRef = getParametersType(
             operationId,
             operationSchema,
-          ),
-          dataTypeRef,
-          pathParametersTypeRef,
-          queryParametersTypeRef,
-          hasRequiredQueryParameters,
-          summary: methodConfig.summary,
-          description: methodConfig.description,
-          tags: methodConfig.tags,
-          parameters: methodConfig.parameters,
-        };
-      }),
+            'path',
+          );
+
+          const queryParametersTypeRef = getParametersType(
+            operationId,
+            operationSchema,
+            'query',
+          );
+
+          const hasRequiredQueryParameters = hasRequiredParametersType(
+            operationSchema,
+            'query',
+          );
+
+          const hasOptionalOptions =
+            !hasRequiredQueryParameters &&
+            !pathParametersTypeRef &&
+            !dataTypeRef;
+
+          return {
+            endpoint,
+            method,
+            operationId,
+            secure: !!(methodConfig.security || []).length,
+            hasOptions:
+              pathParametersTypeRef || queryParametersTypeRef || dataTypeRef,
+            hasOptionalOptions,
+            responseTypeRef: getFunctionResponseType(
+              operationId,
+              operationSchema,
+            ),
+            dataTypeRef,
+            pathParametersTypeRef,
+            queryParametersTypeRef,
+            hasRequiredQueryParameters,
+            summary: methodConfig.summary,
+            description: methodConfig.description,
+            tags: methodConfig.tags,
+            parameters: methodConfig.parameters,
+          };
+        })
+        .filter(Boolean),
     ],
     [],
   );
