@@ -47,7 +47,7 @@ Alternatively, you can specify a custom output directory using the `--out`
 argument, for example:
 
 ```text
-yarn oac http://example.api.com/docs.json --out src/generated
+yarn oac http://example.api.com/docs.json --out src/client
 ```
 
 ## Usage

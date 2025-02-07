@@ -23,8 +23,6 @@ const { getOapiSpecs } = require('./get-spec');
 // eslint-disable-next-line import/no-dynamic-require
 const pkg = require(`${appRoot.path}/package.json`);
 
-const GENERATED_FILES_DIR = path.join(SRC_DIR, 'generated');
-
 /**
  * Format a JSON Schema title as a TypeScript refererence.
  *
@@ -288,10 +286,10 @@ const buildTypesFile = async (outDir, types) => {
 /**
  * Build the index file that pull together the files generated for each client.
  */
-const buildIndexFile = async (oapiSpecs) => {
+const buildIndexFile = async (oapiSpecs, generatedFilesDir) => {
   const fileName = 'index.ts';
   const templatePath = path.join(TEMPLATES_DIR, `${fileName}.tmpl`);
-  const outPath = path.join(GENERATED_FILES_DIR, fileName);
+  const outPath = path.join(generatedFilesDir, fileName);
 
   await compileTemplate(templatePath, outPath, {
     services: oapiSpecs.map((spec) => ({
@@ -359,9 +357,9 @@ const validateOapiSpec = (oapiSpec, operations) => {
 /**
  * Build an API client based on its OpenAPI spec.
  */
-const buildClient = async (oapiSpec, buildDir) => {
+const buildClient = async (oapiSpec, buildDir, generatedFilesDir) => {
   const { title } = (oapiSpec || {}).info || {};
-  const outDir = path.join(GENERATED_FILES_DIR, camelCase(title));
+  const outDir = path.join(generatedFilesDir, camelCase(title));
   const types = await openapiTS(oapiSpec);
   const jsonSchemaTypes = await convertTsToJsonSchema(types);
   const operations = getFlatOperations(oapiSpec, jsonSchemaTypes);
@@ -387,9 +385,15 @@ const buildClient = async (oapiSpec, buildDir) => {
  */
 module.exports.build = async (buildDir) => {
   const oapiSpecs = await getOapiSpecs();
+  const generatedFilesDir = path.join(buildDir, 'generated');
 
-  fse.emptyDirSync(GENERATED_FILES_DIR);
+  fse.emptyDirSync(generatedFilesDir);
   fse.emptyDirSync(buildDir);
 
-  await Promise.all([...oapiSpecs.map(buildClient), buildIndexFile(oapiSpecs)]);
+  await Promise.all([
+    ...oapiSpecs.map((openapiSpec) =>
+      buildClient(openapiSpec, buildDir, generatedFilesDir),
+    ),
+    buildIndexFile(oapiSpecs, generatedFilesDir),
+  ]);
 };
