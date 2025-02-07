@@ -22,7 +22,6 @@ export type OpenApiClientOptions = {
   onError?: (error: OpenApiClientError) => void;
   onClientError?: (error: OpenApiClientError) => void;
   onTimeoutError?: (error: OpenApiClientTimeoutError) => void;
-  onUpgradeRequired?: () => void;
   onRequest?: OnRequestFunction;
   paramsSerializer?: ParamsSerializer;
   userAgent?: string;
