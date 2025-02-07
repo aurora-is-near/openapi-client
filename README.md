@@ -50,6 +50,14 @@ argument, for example:
 yarn oac http://example.api.com/docs.json --out src/client
 ```
 
+If using this pattern then for the remainder of these docs where we refer to
+importing from `@immediate_media/openapi-client` you should instead import
+from the index file of your custom output folder, for example:
+
+```js
+import { createMyApiClient } from './generated';
+```
+
 ## Usage
 
 Once the API client has been generated it can be instantiated as follows:

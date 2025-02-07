@@ -385,15 +385,15 @@ const buildClient = async (oapiSpec, buildDir, generatedFilesDir) => {
  */
 module.exports.build = async (buildDir) => {
   const oapiSpecs = await getOapiSpecs();
-  const generatedFilesDir = path.join(buildDir, 'generated');
+  const generatedClientsDir = path.join(buildDir, 'clients');
 
-  fse.emptyDirSync(generatedFilesDir);
+  fse.emptyDirSync(generatedClientsDir);
   fse.emptyDirSync(buildDir);
 
   await Promise.all([
     ...oapiSpecs.map((openapiSpec) =>
-      buildClient(openapiSpec, buildDir, generatedFilesDir),
+      buildClient(openapiSpec, buildDir, generatedClientsDir),
     ),
-    buildIndexFile(oapiSpecs, generatedFilesDir),
+    buildIndexFile(oapiSpecs, generatedClientsDir),
   ]);
 };
