@@ -47,7 +47,7 @@
     "pascal-case": "^3.1.2",
     "qs": "^6.10.3",
     "typeconv": "^1.7.0",
-    "yargs": "^17.6.2"
+    "yargs": "^17.7.2"
   },
   "peerDependencies": {
     "typescript": "*"
@@ -67,5 +67,10 @@
     "semantic-release": "^24.0.0",
     "ts-jest": "^29.1.0",
     "typescript": "^5.1.0"
+  },
+  "resolutions": {
+    "strip-ansi": "^6.0.1",
+    "string-width": "^4.2.0",
+    "wrap-ansi": "^7.0.0"
   }
 }

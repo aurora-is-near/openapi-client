@@ -24,7 +24,6 @@ const { getOapiSpecs } = require('./get-spec');
 const pkg = require(`${appRoot.path}/package.json`);
 
 const GENERATED_FILES_DIR = path.join(SRC_DIR, 'generated');
-const BUILD_DIR = path.join(appRoot.path, 'node_modules', '.oac');
 
 /**
  * Format a JSON Schema title as a TypeScript refererence.
@@ -360,7 +359,7 @@ const validateOapiSpec = (oapiSpec, operations) => {
 /**
  * Build an API client based on its OpenAPI spec.
  */
-const buildClient = async (oapiSpec) => {
+const buildClient = async (oapiSpec, buildDir) => {
   const { title } = (oapiSpec || {}).info || {};
   const outDir = path.join(GENERATED_FILES_DIR, camelCase(title));
   const types = await openapiTS(oapiSpec);
@@ -378,7 +377,7 @@ const buildClient = async (oapiSpec) => {
 
   const files = glob.sync('**.ts', { cwd: SRC_DIR, absolute: true });
 
-  compileTs(files, ModuleKind.CommonJS, BUILD_DIR);
+  compileTs(files, ModuleKind.CommonJS, buildDir);
 
   console.info(`${chalk.green('✔')} ${oapiSpec.info.title} client generated`);
 };
@@ -386,11 +385,11 @@ const buildClient = async (oapiSpec) => {
 /**
  * Generate all the things.
  */
-module.exports.build = async () => {
+module.exports.build = async (buildDir) => {
   const oapiSpecs = await getOapiSpecs();
 
   fse.emptyDirSync(GENERATED_FILES_DIR);
-  fse.emptyDirSync(BUILD_DIR);
+  fse.emptyDirSync(buildDir);
 
   await Promise.all([...oapiSpecs.map(buildClient), buildIndexFile(oapiSpecs)]);
 };

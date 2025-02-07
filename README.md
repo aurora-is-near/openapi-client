@@ -38,6 +38,18 @@ yarn oac -f spec.json
 Where `spec.json` is the location of the OpenAPI specification file from which
 you want to generate the client.
 
+### Custom output directory
+
+The process described above will output the generated client files to
+`node_modules/.oac`.
+
+Alternatively, you can specify a custom output directory using the `--out`
+argument, for example:
+
+```text
+yarn oac http://example.api.com/docs.json --out src/generated
+```
+
 ## Usage
 
 Once the API client has been generated it can be instantiated as follows:
