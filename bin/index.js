@@ -12,7 +12,7 @@ const DEFAULT_BUILD_DIR = path.join(appRoot.path, 'node_modules', '.oac');
 const outPath = argv.out || DEFAULT_BUILD_DIR;
 const fullOutPath = path.isAbsolute(outPath)
   ? outPath
-  : path.join(process.cwd(), outPath);
+  : path.join(appRoot.path, outPath);
 
 (async () => {
   try {
