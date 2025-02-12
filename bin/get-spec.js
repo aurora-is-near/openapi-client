@@ -6,6 +6,7 @@ const { hideBin } = require('yargs/helpers');
 const chalk = require('chalk');
 const axios = require('axios');
 const { backOff } = require('exponential-backoff');
+const YAML = require('yaml');
 
 const { argv } = yargs(hideBin(process.argv));
 
@@ -18,11 +19,14 @@ module.exports.getSpecFromFile = async (partialSpecPath) => {
     throw new Error(`No spec found at ${specPath}`);
   }
 
-  const json = fse.readJSONSync(specPath);
+  const ext = path.extname(specPath);
+  const json = ['.yml', '.yaml'].includes(ext)
+    ? YAML.parse(fse.readFileSync(specPath, 'utf8'))
+    : fse.readJSONSync(specPath);
 
   console.info(chalk.gray(`OpenAPI specification loaded from ${specPath}`));
 
-  return json;
+  return [json];
 };
 
 const fetchOapiSpec = async (url) => {
