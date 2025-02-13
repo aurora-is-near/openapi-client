@@ -2,7 +2,7 @@ import { getRequestFunction } from '../create';
 import { OpenApiClientOptions } from '../options';
 
 {{#each services}}
-import type { components as {{name}}Types } from './{{dir}}/types';
+import { components as {{name}}Types } from './{{dir}}/types';
 import {
   getOperations as get{{name}}Operations,
   {{name}}Methods,

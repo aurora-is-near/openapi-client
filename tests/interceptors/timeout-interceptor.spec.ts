@@ -1,6 +1,6 @@
 import { InternalAxiosRequestConfig } from 'axios';
 import { timeoutInterceptor } from '../../src/interceptors';
-import type { OpenApiClientOptions } from '../../src/options';
+import { OpenApiClientOptions } from '../../src/options';
 
 describe('timeout interceptor', () => {
   const timeout = {

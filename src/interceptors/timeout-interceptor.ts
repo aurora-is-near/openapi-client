@@ -1,5 +1,5 @@
-import type { InternalAxiosRequestConfig } from 'axios';
-import type { Timeout } from '../options';
+import { InternalAxiosRequestConfig } from 'axios';
+import { Timeout } from '../options';
 
 export const timeoutInterceptor =
   (timeout: Timeout) => (config: InternalAxiosRequestConfig) => {
