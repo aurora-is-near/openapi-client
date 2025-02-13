@@ -1,7 +1,7 @@
 {
   "name": "@aurora-is-near/openapi-client",
   "description": "A type-safe OpenAPI client generator.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": "Alex Mendes",
   "license": "UNLICENSED",
   "main": "index.js",
