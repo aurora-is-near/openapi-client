@@ -13,9 +13,6 @@
     "oac": "./bin/index.js"
   },
   "sideEffects": false,
-  "engines": {
-    "node": ">=20.8.1"
-  },
   "bin": {
     "oac": "./bin/index.js"
   },
