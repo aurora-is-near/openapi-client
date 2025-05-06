@@ -1,4 +1,8 @@
 module.exports = {
   extends: ['@commitlint/config-conventional'],
-  rules: { 'body-max-line-length': [0] },
+  ignores: [(commit) => commit.startsWith('chore(release):')],
+  rules: {
+    'footer-max-line-length': [0],
+    'body-max-line-length': [0],
+  },
 };
