@@ -104,7 +104,7 @@ const getFunctionResponseType = (operationId, operationSchema) => {
   }
 
   const successStatusCodes = Object.keys(responses.properties).filter(
-    (statusCode) => statusCode.startsWith('2'),
+    (statusCode) => statusCode.startsWith('2') || statusCode.startsWith('3'),
   );
 
   if (!successStatusCodes.length) {
