@@ -1,13 +1,13 @@
 import { getRequestFunction } from '../create';
-import { OpenApiClientOptions } from '../options';
+import type { OpenApiClientOptions } from '../options';
 
 {{#each services}}
-import { components as {{name}}Types } from './{{dir}}/types';
+import type { components as {{name}}Types } from './{{dir}}/types';
 import {
   getOperations as get{{name}}Operations,
-  {{name}}Methods,
-  {{name}}Client,
-  {{name}}Request,
+  type {{name}}Methods,
+  type {{name}}Client,
+  type {{name}}Request,
 } from './{{dir}}/client';
 {{/each}}
 
@@ -15,9 +15,9 @@ import {
 export type {{name}}Models = {{name}}Types['schemas'];
 
 export {
-  {{name}}Methods,
-  {{name}}Client,
-  {{name}}Request,
+  type {{name}}Methods,
+  type {{name}}Client,
+  type {{name}}Request,
   get{{name}}Operations,
 };
 {{/each}}
