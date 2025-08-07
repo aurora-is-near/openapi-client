@@ -373,10 +373,6 @@ const buildClient = async (oapiSpec, buildDir, generatedFilesDir) => {
     buildTypesFile(outDir, types),
   ]);
 
-  const files = glob.sync('**.ts', { cwd: SRC_DIR, absolute: true });
-
-  compileTs(files, ModuleKind.CommonJS, buildDir);
-
   console.info(`${chalk.green('✔')} ${oapiSpec.info.title} client generated`);
 };
 
@@ -396,4 +392,19 @@ module.exports.build = async (buildDir) => {
     ),
     buildIndexFile(oapiSpecs, generatedClientsDir),
   ]);
+
+  compileTs(
+    glob.sync('**.ts', { cwd: SRC_DIR, absolute: true }),
+    ModuleKind.CommonJS,
+    buildDir,
+  );
+
+  compileTs(
+    glob.sync('**/{index,client}.ts', {
+      cwd: generatedClientsDir,
+      absolute: true,
+    }),
+    ModuleKind.CommonJS,
+    generatedClientsDir,
+  );
 };
