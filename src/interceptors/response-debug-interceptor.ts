@@ -6,7 +6,12 @@ import {
 } from '../errors';
 
 type ResponseError = AxiosError<
-  { message?: string; type?: string; errors?: ValidationError[] },
+  {
+    message?: string;
+    type?: string;
+    errors?: ValidationError[];
+    detail?: string;
+  },
   { method: string; url: string; baseURL: string }
 > & {
   statusCode: number;
@@ -41,6 +46,7 @@ export const createResponseDebugInterceptor = (
     const openApiClientError = new OpenApiClientError(finalStatus, msg, {
       type: data?.type,
       errors: data?.errors,
+      detail: data?.detail,
     });
 
     /* eslint-disable no-console */

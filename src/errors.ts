@@ -7,6 +7,7 @@ export type ValidationError = {
 type OpenApiClientErrorOptions = {
   type?: string;
   errors?: ValidationError[];
+  detail?: string;
 };
 
 export type OpenApiClientTimeoutErrorCode = 'ECONNABORTED' | 'ETIMEDOUT';
@@ -30,6 +31,8 @@ export class OpenApiClientError extends BaseOpenApiClientError {
 
   type?: string;
 
+  detail?: string;
+
   errors?: ValidationError[];
 
   isOpenApiClientError = true;
@@ -37,7 +40,7 @@ export class OpenApiClientError extends BaseOpenApiClientError {
   constructor(
     statusCode: number,
     message: string,
-    { errors, type }: OpenApiClientErrorOptions = {},
+    { errors, type, detail }: OpenApiClientErrorOptions = {},
   ) {
     const code = statusCode >= 500 ? 'EHTTPSERVER' : 'EHTTPCLIENT';
 
@@ -58,6 +61,7 @@ export class OpenApiClientError extends BaseOpenApiClientError {
     this.name = 'OpenApiClientError';
     this.errors = errors;
     this.type = type;
+    this.detail = detail;
   }
 }
 

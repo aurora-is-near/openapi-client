@@ -41,6 +41,15 @@ describe('Errors', () => {
 
       expect(err.message).toMatchSnapshot();
     });
+
+    it('creates an error with details', () => {
+      const err = new OpenApiClientError(400, 'BadRequest', {
+        detail: 'Invalid input',
+      });
+
+      expect(err.statusCode).toBe(400);
+      expect(err.detail).toBe('Invalid input');
+    });
   });
 
   describe('isOpenApiClientError', () => {
