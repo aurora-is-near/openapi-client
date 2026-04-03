@@ -97,20 +97,24 @@ const getTypeReferenceFromJson = (content) => {
 const getFunctionResponseType = (operationId, operationSchema) => {
   const { responses } = operationSchema.properties || {};
 
-  if (!responses) {
-    throw new Error(
-      `No responses were defined for operation ID "${operationId}".`,
+  if (!responses || !responses.properties) {
+    console.warn(
+      `No responses were defined for operation ID "${operationId}", defaulting to void.`,
     );
+
+    return 'void';
   }
 
   const successStatusCodes = Object.keys(responses.properties).filter(
-    (statusCode) => statusCode.startsWith('2'),
+    (statusCode) => statusCode.startsWith('2') || statusCode.startsWith('3'),
   );
 
   if (!successStatusCodes.length) {
-    throw new Error(
-      `No success responses were defined for operation ID "${operationId}".`,
+    console.warn(
+      `No success responses were defined for operation ID "${operationId}", defaulting to void.`,
     );
+
+    return 'void';
   }
 
   if (successStatusCodes.length > 1) {
