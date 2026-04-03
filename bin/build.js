@@ -189,7 +189,7 @@ const isFormDataOperation = (operationSchema) => {
 
   const { content } = requestBody.properties || {};
 
-  return '"multipart/form-data"' in content.properties;
+  return 'multipart/form-data' in content.properties;
 };
 
 /**
@@ -204,6 +204,14 @@ const getFlatOperations = ({ paths }, jsonSchemaTypes) =>
           const { operationId } = methodConfig;
           const operationSchema =
             jsonSchemaTypes.definitions.operations.properties[operationId];
+
+          if (!operationSchema) {
+            console.warn(
+              `Skipping operation "${operationId}": could not resolve schema from the specification`,
+            );
+
+            return null;
+          }
 
           if (isFormDataOperation(operationSchema)) {
             console.warn(
