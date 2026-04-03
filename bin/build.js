@@ -61,10 +61,10 @@ const getTypeReferenceFromJson = (content) => {
     return 'undefined';
   }
 
-  const jsonKey = '"application/json"';
+  const jsonKey = 'application/json';
 
   if (!(jsonKey in content.properties)) {
-    throw new Error('No "application/json: content found');
+    throw new Error('No "application/json" content found');
   }
 
   const { title } = content.properties[jsonKey] || {};
