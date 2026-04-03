@@ -8,7 +8,7 @@ import type { OperationConfig } from '../../operations';
 
 export interface {{name}}Methods {
   {{#each operations}}
-  {{operationId}}: {
+  {{{propertyKey operationId}}}: {
     response: {{{responseTypeRef}}};
     {{#if dataTypeRef}}
     data: {{{dataTypeRef}}};
@@ -45,13 +45,13 @@ export type {{name}}Request = <T extends keyof {{name}}Methods>(
 
 export type {{name}}Client = {
   {{#each operations}}
-  {{operationId}}: ({{#if hasOptions}}options{{#if hasOptionalOptions}}?{{/if}}: {{../name}}Methods['{{operationId}}']['options']{{/if}}) => Promise<{{../name}}Methods['{{operationId}}']['response']>;
+  {{{propertyKey operationId}}}: ({{#if hasOptions}}options{{#if hasOptionalOptions}}?{{/if}}: {{../name}}Methods['{{operationId}}']['options']{{/if}}) => Promise<{{../name}}Methods['{{operationId}}']['response']>;
   {{/each}}
 }
 
 export const getOperations = (request: {{name}}Request): {{name}}Client => ({
   {{#each operations}}
-  async {{operationId}}(
+  async {{{propertyKey operationId}}}(
     {{#if hasOptions}}options{{#if hasOptionalOptions}}?{{/if}}: {{../name}}Methods['{{operationId}}']['options']{{/if}}
   ): Promise<{{../name}}Methods['{{operationId}}']['response']> {
     return request({

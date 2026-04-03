@@ -20,8 +20,13 @@ Handlebars.registerHelper('toUpperCase', (str) =>
 );
 
 Handlebars.registerHelper('bool', (str) => !!str);
+
 Handlebars.registerHelper('stripWhitespace', (str) =>
   str ? str.replace(/\r?\n|\r|\s+/g, ' ') : '',
+);
+
+Handlebars.registerHelper('propertyKey', (str) =>
+  /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(str) ? str : `'${str}'`,
 );
 
 /**
