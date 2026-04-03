@@ -302,6 +302,31 @@ const buildIndexFile = async (oapiSpecs, generatedFilesDir) => {
 };
 
 /**
+ * Strip literal double quotes from JSON schema property keys.
+ *
+ * The core-types-ts library uses getText() to extract property names, which
+ * preserves source quotes for non-identifier keys (e.g. "fetch-thing"
+ * becomes '"fetch-thing"'). This function normalises those keys so lookups work
+ * without needing to account for the extra quotes.
+ */
+const stripQuotedKeys = (obj) => {
+  if (Array.isArray(obj)) {
+    return obj.map(stripQuotedKeys);
+  }
+
+  if (obj && typeof obj === 'object') {
+    return Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => [
+        key.replace(/^"(.*)"$/, '$1'),
+        stripQuotedKeys(value),
+      ]),
+    );
+  }
+
+  return obj;
+};
+
+/**
  * Convert the TS to a JSON schema.
  *
  * So we can parse it and discover what's in the code! For example, does a
@@ -313,7 +338,7 @@ const convertTsToJsonSchema = async (ts) => {
   const { convert } = makeConverter(reader, writer);
   const { data } = await convert({ data: ts });
 
-  return JSON.parse(data);
+  return stripQuotedKeys(JSON.parse(data));
 };
 
 /**
