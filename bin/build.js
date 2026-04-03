@@ -200,6 +200,7 @@ const getFlatOperations = ({ paths }, jsonSchemaTypes) =>
     (acc, [endpoint, endpointConfig]) => [
       ...acc,
       ...Object.entries(endpointConfig)
+        .filter(([, methodConfig]) => methodConfig.operationId)
         .map(([method, methodConfig]) => {
           const { operationId } = methodConfig;
           const operationSchema =
